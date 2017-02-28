@@ -92,18 +92,24 @@ static UIApplication *_YYSharedApplication() {
 
 #pragma mark - db
 
+#pragma mark action 打开 db
 - (BOOL)_dbOpen {
     if (_db) return YES;
     
     int result = sqlite3_open(_dbPath.UTF8String, &_db);
     if (result == SQLITE_OK) {
+        //打开正确
         CFDictionaryKeyCallBacks keyCallbacks = kCFCopyStringDictionaryKeyCallBacks;
         CFDictionaryValueCallBacks valueCallbacks = {0};
+        //dbstms 缓存字典
         _dbStmtCache = CFDictionaryCreateMutable(CFAllocatorGetDefault(), 0, &keyCallbacks, &valueCallbacks);
+        //上次出错的时间
         _dbLastOpenErrorTime = 0;
+        //打开错误次数
         _dbOpenErrorCount = 0;
         return YES;
     } else {
+        //打开错误
         _db = NULL;
         if (_dbStmtCache) CFRelease(_dbStmtCache);
         _dbStmtCache = NULL;
@@ -116,17 +122,19 @@ static UIApplication *_YYSharedApplication() {
         return NO;
     }
 }
-
+#pragma mark action 关闭 db
 - (BOOL)_dbClose {
     if (!_db) return YES;
     
     int  result = 0;
     BOOL retry = NO;
     BOOL stmtFinalized = NO;
-    
+    //释放 stms  缓存
     if (_dbStmtCache) CFRelease(_dbStmtCache);
     _dbStmtCache = NULL;
     
+    
+    //
     do {
         retry = NO;
         result = sqlite3_close(_db);
@@ -172,6 +180,8 @@ static UIApplication *_YYSharedApplication() {
     sqlite3_wal_checkpoint(_db, NULL);
 }
 
+
+#pragma mark action 执行 sql 语句
 - (BOOL)_dbExecute:(NSString *)sql {
     if (sql.length == 0) return NO;
     if (![self _dbCheck]) return NO;
@@ -186,10 +196,13 @@ static UIApplication *_YYSharedApplication() {
     return result == SQLITE_OK;
 }
 
+#pragma mark action 获取 预处理语句
 - (sqlite3_stmt *)_dbPrepareStmt:(NSString *)sql {
     if (![self _dbCheck] || sql.length == 0 || !_dbStmtCache) return NULL;
+    //预处理类
     sqlite3_stmt *stmt = (sqlite3_stmt *)CFDictionaryGetValue(_dbStmtCache, (__bridge const void *)(sql));
     if (!stmt) {
+        //将预处理语句存在欲处理类中
         int result = sqlite3_prepare_v2(_db, sql.UTF8String, -1, &stmt, NULL);
         if (result != SQLITE_OK) {
             if (_errorLogsEnabled) NSLog(@"%s line:%d sqlite stmt prepare error (%d): %s", __FUNCTION__, __LINE__, result, sqlite3_errmsg(_db));
@@ -222,9 +235,10 @@ static UIApplication *_YYSharedApplication() {
 
 - (BOOL)_dbSaveWithKey:(NSString *)key value:(NSData *)value fileName:(NSString *)fileName extendedData:(NSData *)extendedData {
     NSString *sql = @"insert or replace into manifest (key, filename, size, inline_data, modification_time, last_access_time, extended_data) values (?1, ?2, ?3, ?4, ?5, ?6, ?7);";
+    //获取预处理类
     sqlite3_stmt *stmt = [self _dbPrepareStmt:sql];
     if (!stmt) return NO;
-    
+    //存值
     int timestamp = (int)time(NULL);
     sqlite3_bind_text(stmt, 1, key.UTF8String, -1, NULL);
     sqlite3_bind_text(stmt, 2, fileName.UTF8String, -1, NULL);

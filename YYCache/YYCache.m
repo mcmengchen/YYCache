@@ -23,7 +23,7 @@
 - (instancetype)initWithName:(NSString *)name {
     if (name.length == 0) return nil;
     NSString *cacheFolder = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) firstObject];
-    NSString *path = [cacheFolder stringByAppendingPathComponent:name];
+    NSString * path = [cacheFolder stringByAppendingPathComponent:name];
     return [self initWithPath:path];
 }
 

@@ -10,6 +10,7 @@
 #import "YYCache.h"
 #import "PINCache.h"
 #import "TMCache.h"
+#import "MITMemoryCache.h"
 #import "YYThreadSafeDictionary.h"
 #import <QuartzCore/QuartzCore.h>
 
@@ -85,9 +86,11 @@
     YYThreadSafeDictionary *nsDictLock = [YYThreadSafeDictionary new];
     NSCache *ns = [NSCache new];
     PINMemoryCache *pin = [PINMemoryCache new];
-    TMMemoryCache *tm = [TMMemoryCache new];
+//    TMMemoryCache *tm = [TMMemoryCache new];
     YYMemoryCache *yy = [YYMemoryCache new];
+    MITMemoryCache *mit = [MITMemoryCache new];
     yy.releaseOnMainThread = YES;
+    mit.releaseOnMainThread = true;
     
     NSMutableArray *keys = [NSMutableArray new];
     NSMutableArray *values = [NSMutableArray new];
@@ -162,16 +165,29 @@
     time = end - begin;
     printf("NSCache:        %8.2f\n", time * 1000);
     
-    
     begin = CACurrentMediaTime();
     @autoreleasepool {
-        for (int i = 0; i < count / 100; i++) {
-            [tm setObject:values[i] forKey:keys[i]]; // too slow...
+        for (int i = 0; i < count; i++) {
+            [mit setObject:values[i] forKey:keys[i]];
         }
     }
     end = CACurrentMediaTime();
     time = end - begin;
-    printf("TMMemoryCache:  %8.2f\n", time * 1000 * 100);
+    printf("MITMemoryCache: %8.2f\n", time * 1000);
+    
+    
+//    begin = CACurrentMediaTime();
+//    @autoreleasepool {
+//        for (int i = 0; i < count / 100; i++) {
+//            [tm setObject:values[i] forKey:keys[i]]; // too slow...
+//        }
+//    }
+//    end = CACurrentMediaTime();
+//    time = end - begin;
+//    printf("TMMemoryCache:  %8.2f\n", time * 1000 * 100);
+    
+
+    
     
     
     
@@ -241,16 +257,28 @@
     printf("NSCache:        %8.2f\n", time * 1000);
     
     
-    [tm removeAllObjects];
+    [mit removeAllObjects];
     begin = CACurrentMediaTime();
     @autoreleasepool {
-        for (int i = 0; i < count / 100; i++) {
-            [tm setObject:values[i] forKey:keys[i]]; // too slow...
+        for (int i = 0; i < count; i++) {
+            [mit setObject:values[i] forKey:keys[i]];
         }
     }
     end = CACurrentMediaTime();
     time = end - begin;
-    printf("TMMemoryCache:  %8.2f\n", time * 1000 * 100);
+    printf("MITMemoryCache:   %8.2f\n", time * 1000);
+    
+    
+//    [tm removeAllObjects];
+//    begin = CACurrentMediaTime();
+//    @autoreleasepool {
+//        for (int i = 0; i < count / 100; i++) {
+//            [tm setObject:values[i] forKey:keys[i]]; // too slow...
+//        }
+//    }
+//    end = CACurrentMediaTime();
+//    time = end - begin;
+//    printf("TMMemoryCache:  %8.2f\n", time * 1000 * 100);
     
     
     
@@ -317,13 +345,23 @@
     
     begin = CACurrentMediaTime();
     @autoreleasepool {
-        for (int i = 0; i < count / 100; i++) {
-            [tm objectForKey:keys[i]];
+        for (int i = 0; i < count; i++) {
+            [mit objectForKey:keys[i]];
         }
     }
     end = CACurrentMediaTime();
     time = end - begin;
-    printf("TMMemoryCache:  %8.2f\n", time * 1000 * 100);
+    printf("MITMemoryCache:  %8.2f\n", time * 1000);
+    
+//    begin = CACurrentMediaTime();
+//    @autoreleasepool {
+//        for (int i = 0; i < count / 100; i++) {
+//            [tm objectForKey:keys[i]];
+//        }
+//    }
+//    end = CACurrentMediaTime();
+//    time = end - begin;
+//    printf("TMMemoryCache:  %8.2f\n", time * 1000 * 100);
     
     
     
@@ -388,16 +426,26 @@
     time = end - begin;
     printf("NSCache:        %8.2f\n", time * 1000);
     
-    
     begin = CACurrentMediaTime();
     @autoreleasepool {
-        for (int i = 0; i < count / 100; i++) {
-            [tm objectForKey:keys[i]];
+        for (int i = 0; i < count; i++) {
+            [mit objectForKey:keys[i]];
         }
     }
     end = CACurrentMediaTime();
     time = end - begin;
-    printf("TMMemoryCache:  %8.2f\n", time * 1000 * 100);
+    printf("MITMemoryCache:  %8.2f\n", time * 1000);
+    
+    
+//    begin = CACurrentMediaTime();
+//    @autoreleasepool {
+//        for (int i = 0; i < count / 100; i++) {
+//            [tm objectForKey:keys[i]];
+//        }
+//    }
+//    end = CACurrentMediaTime();
+//    time = end - begin;
+//    printf("TMMemoryCache:  %8.2f\n", time * 1000 * 100);
  
     
     
@@ -469,16 +517,25 @@
     time = end - begin;
     printf("NSCache:        %8.2f\n", time * 1000);
     
-    
     begin = CACurrentMediaTime();
     @autoreleasepool {
-        for (int i = 0; i < count / 100; i++) {
-            [tm objectForKey:keys[i]];
+        for (int i = 0; i < count; i++) {
+            [mit objectForKey:keys[i]];
         }
     }
     end = CACurrentMediaTime();
     time = end - begin;
-    printf("TMMemoryCache:  %8.2f\n", time * 1000 * 100);
+    printf("MITMemoryCache:  %8.2f\n", time * 1000);
+    
+//    begin = CACurrentMediaTime();
+//    @autoreleasepool {
+//        for (int i = 0; i < count / 100; i++) {
+//            [tm objectForKey:keys[i]];
+//        }
+//    }
+//    end = CACurrentMediaTime();
+//    time = end - begin;
+//    printf("TMMemoryCache:  %8.2f\n", time * 1000 * 100);
 }
 
 

@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "087BB9BAF2D0E7BB0C8DABFA13897AFE5D08BEAF",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "AEC35ACC533216FDD54260E68A8A000410066971" : 9223372036854775807,
+    "087BB9BAF2D0E7BB0C8DABFA13897AFE5D08BEAF" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "3648FFED-41D4-415C-A7F9-4813CF53B508",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "AEC35ACC533216FDD54260E68A8A000410066971" : "",
+    "087BB9BAF2D0E7BB0C8DABFA13897AFE5D08BEAF" : "YYCache\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "CacheBenchmark",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Benchmark\/CacheBenchmark.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/mcmengchen\/YYCache",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "087BB9BAF2D0E7BB0C8DABFA13897AFE5D08BEAF"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/mcmengchen\/iOS---MIthcell-NSInvocation.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "AEC35ACC533216FDD54260E68A8A000410066971"
+    }
+  ]
+}

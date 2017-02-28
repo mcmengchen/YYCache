@@ -14,8 +14,6 @@
 #import <CoreFoundation/CoreFoundation.h>
 #import <QuartzCore/QuartzCore.h>
 #import <pthread.h>
-
-
 static inline dispatch_queue_t YYMemoryCacheGetReleaseQueue() {
     return dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0);
 }
@@ -46,6 +44,7 @@ static inline dispatch_queue_t YYMemoryCacheGetReleaseQueue() {
  Typically, you should not use this class directly.
  */
 @interface _YYLinkedMap : NSObject {
+    //package 变量 对内 protected 对外 private
     @package
     CFMutableDictionaryRef _dic; // do not set object directly
     NSUInteger _totalCost;
@@ -80,6 +79,7 @@ static inline dispatch_queue_t YYMemoryCacheGetReleaseQueue() {
 
 - (instancetype)init {
     self = [super init];
+    //创建字典
     _dic = CFDictionaryCreateMutable(CFAllocatorGetDefault(), 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
     _releaseOnMainThread = NO;
     _releaseAsynchronously = YES;
@@ -410,6 +410,8 @@ static inline dispatch_queue_t YYMemoryCacheGetReleaseQueue() {
     [self setObject:object forKey:key withCost:0];
 }
 
+
+#pragma mark action 设置键值对
 - (void)setObject:(id)object forKey:(id)key withCost:(NSUInteger)cost {
     if (!key) return;
     if (!object) {
@@ -417,9 +419,11 @@ static inline dispatch_queue_t YYMemoryCacheGetReleaseQueue() {
         return;
     }
     pthread_mutex_lock(&_lock);
+    //获取 node
     _YYLinkedMapNode *node = CFDictionaryGetValue(_lru->_dic, (__bridge const void *)(key));
     NSTimeInterval now = CACurrentMediaTime();
     if (node) {
+        //总成本
         _lru->_totalCost -= node->_cost;
         _lru->_totalCost += cost;
         node->_cost = cost;
